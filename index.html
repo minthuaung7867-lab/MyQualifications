@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>cvv — Qualifications</title>
+<style>
+  :root{
+    --bg:#0f172a;            /* slate-900 */
+    --panel:#0b122a;         /* deep panel */
+    --card:#0b122a;
+    --ink:#e5e7eb;           /* gray-200 */
+    --muted:#9ca3af;         /* gray-400 */
+    --brand:#6B73FF;         /* accent */
+    --brand2:#000DFF;
+    --chip:#1e293b;          /* slate-800 */
+    --ring: rgba(107,115,255,.45);
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    background:
+      radial-gradient(1200px 600px at 10% -10%, rgba(107,115,255,.10), transparent 60%),
+      radial-gradient(1000px 500px at 110% 0%, rgba(0,13,255,.10), transparent 60%),
+      var(--bg);
+    color:var(--ink);
+    padding:28px;
+  }
+  a{ color:var(--ink); text-decoration: none; }
+  .page{
+    max-width:1100px; margin:0 auto;
+    background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:20px;
+    box-shadow:
+      0 20px 50px rgba(0,0,0,.35),
+      inset 0 1px 0 rgba(255,255,255,.06);
+    overflow:hidden;
+  }
+
+  /* Header */
+  .hero{
+    position:relative; padding:72px 24px 28px; text-align:center;
+    background:
+      radial-gradient(800px 300px at 50% 0%, rgba(107,115,255,.25), transparent 60%),
+      linear-gradient(135deg, rgba(107,115,255,.20), rgba(0,13,255,.15));
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  .avatar{
+    width:140px; height:140px; border-radius:50%;
+    object-fit:cover; border:4px solid rgba(255,255,255,.8);
+    box-shadow:0 16px 40px rgba(0,0,0,.45), 0 0 0 8px rgba(255,255,255,.06);
+  }
+  .title{ font-size:1.9rem; margin-top:14px; letter-spacing:.3px; }
+  .subtitle{ color:var(--muted); margin-top:6px; }
+  .chips{ margin-top:14px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .chip{
+    background:var(--chip); border:1px solid rgba(255,255,255,.06);
+    padding:8px 12px; border-radius:999px; color:#cbd5e1; font-weight:600; font-size:.92rem;
+  }
+
+  /* Section */
+  .section{
+    padding:26px; 
+    backdrop-filter: blur(6px);
+  }
+  .section-head{
+    display:flex; align-items:flex-end; gap:14px; margin-bottom:18px; flex-wrap:wrap;
+  }
+  .section h2{
+    font-size:1.25rem; font-weight:800; letter-spacing:.2px;
+    border-bottom:2px solid var(--brand);
+    display:inline-block; padding-bottom:8px;
+  }
+  .section p.lead{ color:#cbd5e1; opacity:.9; }
+
+  /* Grid */
+  .grid{
+    display:grid; gap:18px;
+    grid-template-columns: repeat(12, 1fr);
+  }
+  .card{
+    grid-column: span 12;
+    background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:16px; overflow:hidden;
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .card:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 18px 45px rgba(0,0,0,.35);
+  }
+  .thumb{
+    position:relative; overflow:hidden; aspect-ratio: 16/10; background:#111827;
+  }
+  .thumb img{
+    width:100%; height:100%; object-fit:cover; display:block;
+    transition: transform .5s ease;
+  }
+  .card:hover .thumb img{ transform: scale(1.03); }
+  .badge{
+    position:absolute; top:12px; left:12px;
+    background:rgba(0,0,0,.45); backdrop-filter: blur(3px);
+    border:1px solid rgba(255,255,255,.18);
+    color:#fff; padding:6px 10px; border-radius:999px; font-size:.82rem; font-weight:700;
+  }
+  .body{ padding:16px 16px 18px; }
+  .name{ font-size:1.05rem; font-weight:800; letter-spacing:.2px; }
+  .meta{ margin-top:4px; color:#a5b4fc; font-weight:700; font-size:.9rem; }
+  .desc{ margin-top:8px; color:#cbd5e1; line-height:1.55; }
+  .tags{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
+  .tag{
+    background:rgba(107,115,255,.15); color:#c7d2fe; border:1px solid rgba(99,102,241,.35);
+    padding:4px 10px; border-radius:999px; font-size:.8rem; font-weight:700;
+  }
+  .cta{
+    display:flex; gap:10px; margin-top:12px; flex-wrap:wrap;
+  }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    background:linear-gradient(135deg, var(--brand), var(--brand2));
+    color:white; padding:8px 12px; border-radius:12px; font-weight:800; font-size:.9rem;
+    border:1px solid rgba(255,255,255,.12); cursor:pointer;
+    box-shadow: 0 10px 24px var(--ring);
+  }
+  .btn.secondary{
+    background:transparent; color:#e5e7eb;
+    border:1px solid rgba(255,255,255,.18);
+  }
+  .btn:focus{ outline:2px solid var(--ring); outline-offset:2px; }
+
+  /* Responsive columns */
+  @media (min-width:720px){
+    .card{ grid-column: span 6; }
+  }
+  @media (min-width:1024px){
+    .card{ grid-column: span 4; }
+  }
+
+  /* Lightbox (modal) */
+  .lightbox{
+    position:fixed; inset:0; display:none; place-items:center;
+    background:rgba(0,0,0,.85); z-index:60; padding:24px;
+  }
+  .lightbox.open{ display:grid; }
+  .lightbox img{
+    max-width:min(100%, 1100px); max-height:80vh; border-radius:14px;
+    box-shadow: 0 30px 60px rgba(0,0,0,.6);
+  }
+  .lb-close{
+    position:absolute; top:18px; right:18px; background:rgba(255,255,255,.1);
+    border:1px solid rgba(255,255,255,.25); color:#fff; padding:8px 12px; border-radius:10px;
+    font-weight:800; cursor:pointer;
+  }
+
+  /* Footer */
+  footer{
+    border-top:1px solid rgba(255,255,255,.08);
+    padding:22px; text-align:center; background:linear-gradient(180deg, rgba(255,255,255,.03), transparent);
+  }
+  .foot-grid{
+    display:flex; gap:12px; justify-content:center; flex-wrap:wrap;
+    margin-bottom:6px;
+  }
+  .foot-chip{
+    background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.18);
+    color:#fff; padding:8px 12px; border-radius:999px; font-weight:700;
+  }
+
+  /* Print */
+  @media print{
+    body{ padding:0; background:#fff; color:#111; }
+    .page{ box-shadow:none; border:none; }
+    .hero{ background:#fff; border:none; }
+    .chip, .foot-chip, .btn{ border-color:#ddd; color:#111 !important; background:#fff !important; box-shadow:none; }
+    .lightbox{ display:none !important; }
+  }
+</style>
+</head>
+<body>
+  <main class="page" id="cvv-qualifications" data-profile-name="cvv">
+    <!-- Header -->
+    <header class="hero" aria-labelledby="title">
+      <img src="cvv.jpg" alt="cvv profile photo" class="avatar" loading="lazy" />
+      <h1 id="title" class="title">Min Thu Aung's Qualifications</h1>
+      <p class="subtitle">Education & Certificates</p>
+      <div class="chips">
+        <span class="chip">📍 Myanmar · Open to relocate (UAE)</span>
+        <a class="chip" href="tel:+959980604786">📞 +95 998 060 4786</a>
+        <a class="chip" href="mailto:minthuaung7867@gmail.com">✉️ minthuaung7867@gmail.com</a>
+      </div>
+    </header>
+
+    <!-- Section -->
+    <section class="section" aria-labelledby="quals">
+      <div class="section-head">
+        <h2 id="quals">Education & Certifications</h2>
+        <p class="lead">Click any certificate to view a larger image.</p>
+      </div>
+
+      <div class="grid">
+        <!-- C1 (High School) -->
+        <article class="card" aria-label="C1 - High School Completion">
+          <div class="thumb">
+            <img src="C1.jpg" alt="C1 certificate photo — High School completion" loading="lazy" data-full="C1.jpg">
+            <span class="badge">Academic</span>
+          </div>
+          <div class="body">
+            <div class="name">C1 — Certificate of Completion (High School Academic Year)</div>
+            <div class="meta">Issued: 2021-2022</div>
+            <p class="desc">
+              Official recognition of successful completion of the high school academic year. Validates core academic competencies and readiness for higher education and professional training.
+            </p>
+            <div class="tags">
+              <span class="tag">High School</span><span class="tag">Academic</span>
+            </div>
+            <div class="cta">
+              <button class="btn" data-open="C1.jpg" aria-label="Open C1">View full</button>
+              <a class="btn secondary" href="C1.jpg" download>Download</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- C11 (same as C1) -->
+        <article class="card" aria-label="C11 - High School Completion (same as C1)">
+          <div class="thumb">
+            <img src="C11.jpg" alt="C11 certificate photo — High School completion (same as C1)" loading="lazy" data-full="C11.jpg">
+            <span class="badge">C11</span>
+          </div>
+          <div class="body">
+            <div class="name">C11 — Certificate of Completion (High School Academic Year)</div>
+            <div class="meta">Issued: 2021-2022</div>
+            <p class="desc">
+              Same credential as C1, confirming completion of the high school academic year. Mirrors the scope and standing of C1 per your records.
+            </p>
+            <div class="tags">
+              <span class="tag">High School</span><span class="tag">Academic</span>
+            </div>
+            <div class="cta">
+              <button class="btn" data-open="C11.jpg" aria-label="Open C11">View full</button>
+              <a class="btn secondary" href="C11.jpg" download>Download</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- C2 (Business Management) -->
+        <article class="card" aria-label="C2 - Business Management">
+          <div class="thumb">
+            <img src="C2.jpg" alt="C2 certificate photo — Business Management" loading="lazy" data-full="C2.jpg">
+            <span class="badge">Business Management</span>
+          </div>
+          <div class="body">
+            <div class="name">C2 — Business Management</div>
+            <div class="meta">Issued: 2022</div>
+            <p class="desc">
+              Foundations of business operations, planning, and administration. Covered roles & responsibilities, teamwork, and practical collaboration across departments.
+            </p>
+            <div class="tags">
+              <span class="tag">Business</span><span class="tag">Operations</span><span class="tag">Teamwork</span>
+            </div>
+            <div class="cta">
+              <button class="btn" data-open="C2.jpg" aria-label="Open C2">View full</button>
+              <a class="btn secondary" href="C2.jpg" download>Download</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- C3 (HR Management) -->
+        <article class="card" aria-label="C3 - HR Management">
+          <div class="thumb">
+            <img src="C3.jpg" alt="C3 certificate photo — Human Resources Management" loading="lazy" data-full="C3.jpg">
+            <span class="badge">Human Resources Management</span>
+          </div>
+          <div class="body">
+            <div class="name">C3 — Human Resources Management</div>
+            <div class="meta">Issued: 2022</div>
+            <p class="desc">
+              HR fundamentals: hiring workflow, performance basics, policy awareness, and professional communication. Emphasis on ethics and confidentiality.
+            </p>
+            <div class="tags">
+              <span class="tag">HR</span><span class="tag">Policy</span><span class="tag">Ethics</span>
+            </div>
+            <div class="cta">
+              <button class="btn" data-open="C3.jpg" aria-label="Open C3">View full</button>
+              <a class="btn secondary" href="C3.jpg" download>Download</a>
+            </div>
+          </div>
+        </article>
+
+<!-- C4 (Professional CCTV Installation) -->
+<article class="card" aria-label="C4 - Professional CCTV Installation">
+  <div class="thumb">
+    <img src="C4.jpg" alt="C4 certificate photo — Professional CCTV Installation" loading="lazy" data-full="C4.jpg">
+    <span class="badge">Professional CCTV Installation </span>
+  </div>
+  <div class="body">
+    <div class="name">C4 — Professional in Installing CCTV</div>
+    <div class="meta">Issued: 2024</div>
+    <p class="desc">
+      Practical expertise in CCTV system planning and setup, camera placement, cabling, basic networking, and safe operating procedures.
+    </p>
+    <div class="tags">
+      <span class="tag">CCTV</span><span class="tag">Installation</span><span class="tag">Safety</span>
+    </div>
+    <div class="cta">
+      <button class="btn" data-open="C4.jpg" aria-label="Open C4">View full</button>
+      <a class="btn secondary" href="C4.jpg" download>Download</a>
+    </div>
+  </div>
+</article> <!-- ✅ close the C4 card properly -->
+
+<!-- NCC Level 4 Diploma in Computing -->
+<article class="card" aria-label="NCC Level 4 Diploma in Computing">
+  <div class="thumb">
+    <img src="NCC4.jpg" alt="NCC Level 4 Diploma in Computing certificate photo" loading="lazy" data-full="NCC4.jpg">
+    <span class="badge">NCC 4</span>
+  </div>
+  <div class="body">
+    <div class="name">C5-NCC Level 4 Diploma in Computing</div>
+    <div class="meta">Issued: 2024</div>
+    <p class="desc">
+      Internationally recognized qualification providing a solid foundation in computing, programming, and IT business applications.
+    </p>
+    <div class="tags">
+      <span class="tag">Computing</span><span class="tag">IT Foundation</span><span class="tag">Programming</span>
+    </div>
+    <div class="cta">
+      <button class="btn" data-open="NCC4.jpg" aria-label="Open NCC4">View full</button>
+      <a class="btn secondary" href="NCC4.jpg" download>Download</a>
+    </div>
+  </div>
+</article>
+
+<!-- NCC Level 5 Diploma in Computing -->
+<!-- <article class="card" aria-label="NCC Level 5 Diploma in Computing">
+  <div class="thumb">
+    <img src="NCC5.jpg" alt="NCC Level 5 Diploma in Computing certificate photo" loading="lazy" data-full="NCC5.jpg">
+    <span class="badge">NCC 5</span>
+  </div>
+  <div class="body">
+    <div class="name">NCC Level 5 Diploma in Computing</div>
+    <div class="meta">Issued: 2025</div>
+    <p class="desc">
+      Advanced diploma covering software development, database systems, networking, and information security — preparing for degree-level study.
+    </p>
+    <div class="tags">
+      <span class="tag">Advanced Computing</span><span class="tag">Database</span><span class="tag">Networking</span>
+    </div>
+    <div class="cta">
+      <button class="btn" data-open="NCC5.jpg" aria-label="Open NCC5">View full</button>
+      <a class="btn secondary" href="NCC5.jpg" download>Download</a>
+    </div>
+  </div>
+</article> -->
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer aria-label="Contact">
+      <div class="foot-grid">
+        <a class="foot-chip" href="tel:+959980604786">📞 +95 998 060 4786</a>
+        <a class="foot-chip" href="mailto:minthuaung7867@gmail.com">✉️ minthuaung7867@gmail.com</a>
+        <span class="foot-chip">📍 Myanmar · Open to relocate (UAE)</span>
+      </div>
+      <div style="opacity:.75; font-weight:700;">© 2025 Min Thu Aung — References available upon request</div>
+    </footer>
+  </main>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Preview">
+    <button class="lb-close" id="lbClose" aria-label="Close preview">✕ Close</button>
+    <img id="lbImg" alt="">
+  </div>
+
+<script>
+  // Simple lightbox
+  (function(){
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lbImg');
+    const lbClose = document.getElementById('lbClose');
+
+    function open(src, alt){
+      lbImg.src = src;
+      lbImg.alt = alt || 'Certificate preview';
+      lb.classList.add('open');
+    }
+    function close(){
+      lb.classList.remove('open');
+      lbImg.src = '';
+      lbImg.alt = '';
+    }
+
+    document.addEventListener('click', function(e){
+      const btn = e.target.closest('[data-open]');
+      const img = e.target.closest('.thumb img');
+      if(btn){
+        e.preventDefault();
+        open(btn.getAttribute('data-open'), btn.getAttribute('aria-label') || '');
+      } else if(img){
+        open(img.getAttribute('data-full') || img.src, img.alt || '');
+      } else if(e.target === lb){
+        close();
+      }
+    });
+    lbClose.addEventListener('click', close);
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') close(); });
+  })();
+</script>
+</body>
+</html>
